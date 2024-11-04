@@ -12,7 +12,11 @@
 
 #include "get_next_line.h"
 
-int	main()
+int	main(void)
 {
-	
+	int	fd;
+
+	fd = open("teste.txt", O_RDONLY);
+	printf("%s\n", get_next_line(fd));
+
 }
