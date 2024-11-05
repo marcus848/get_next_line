@@ -21,10 +21,14 @@
 # include <stdio.h>
 # include <fcntl.h>
 
+void	ft_verify_res(char *res, char **line);
+char	*ft_make_join(char *s1, char *s2);
+void	ft_separate_str_line(char *s);
 char	*get_next_line(int fd);
 char	*ft_strdup(const char *s);
 char	*ft_strjoin(char *s1, char *s2);
-int		ft_strchr(const char *s, int c);
+char	*ft_strchr(const char *s, int c);
+// char	*ft_substr(char const *str, unsigned int start, size_t len);
 int		ft_strlen(char *s);
 
 #endif
