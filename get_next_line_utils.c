@@ -14,18 +14,23 @@
 
 char	*ft_strchr(const char *s, int c)
 {
-	while (*s)
+	char	*point;
+	int		i;
+
+	point = (char *)s;
+	i = 0;
+	while (point[i])
 	{
-		if (*s == (char) c)
-			return ((char *) s);
-		s++;
+		if (point[i] == (char) c)
+			return (&point[i]);
+		i++;
 	}
-	if (*s == (char) c)
-		return ((char *) s);
+	if ((char)c == '\0')
+		return (&point[i]);
 	return (NULL);
 }
 
-int	ft_strlen(char *s)
+int	ft_strlen(const char *s)
 {
 	int	i;
 
@@ -39,64 +44,47 @@ char	*ft_strdup(const char *s)
 {
 	char	*dup;
 	int		s_len;
-	int		i;
 
 	s_len = ft_strlen((char *) s);
 	dup = (char *) malloc(sizeof(char) * (s_len + 1));
-	if (dup)
+	if (!dup)
 		return (NULL);
-	i = 0;
-	while (s[i])
-	{
-		dup[i] = s[i];
-		i++;
-	}
-	dup[i] = '\0';
+	if (!s)
+		return (NULL);
+	ft_memcpy(dup, s, s_len);
+	dup[s_len] = '\0';
 	return (dup);
 }
 
-char	*ft_strjoin(char *s1, char *s2)
+char	*ft_strjoin(char const *s1, char const *s2)
 {
 	char	*str_join;
 	int		len_s1;
 	int		len_s2;
-	int		x;
-	int		y;
 
-	y = 0;
-	x = 0;
 	len_s1 = ft_strlen(s1);
 	len_s2 = ft_strlen(s2);
 	str_join = (char *) malloc((len_s1 + len_s2 + 1) * sizeof(char));
 	if (!str_join)
 		return (NULL);
-	while (s1[x])
-	{
-		str_join[x] = s1[x];
-		x++;
-	}
-	while (s2[y])
-		str_join[x++] = s2[y++];
-	str_join[x] = '\0';
+	ft_memcpy(str_join, s1, len_s1);
+	ft_memcpy(&str_join[len_s1], s2, len_s2);
+	str_join[len_s1 + len_s2] = '\0';
 	return (str_join);
 }
-//
-// char	*ft_substr(char const *str, unsigned int start, size_t len)
-// {
-// 	char	*sub_str;
-// 	size_t	str_len;
-//
-// 	if (!str)
-// 		return (NULL);
-// 	str_len = ft_strlen((char *)str);
-// 	if (start >= str_len)
-// 		return (ft_strdup(""));
-// 	if (len + start > str_len)
-// 		len = str_len - start;
-// 	sub_str = (char *) ft_calloc(len + 1, sizeof(char));
-// 	if (!sub_str)
-// 		return (NULL);
-// 	while (--len)
-// 		sub_str[len] = str[start + len];
-// 	return (sub_str);
-// }
+
+void	*ft_memcpy(void *dest, const void *src, size_t n)
+{
+	const unsigned char	*s;
+	unsigned char		*d;
+
+	s = (unsigned char *)src;
+	d = (unsigned char *)dest;
+	if (!dest && !src)
+		return (dest);
+	while (n-- > 0)
+	{
+		*d++ = *s++;
+	}
+	return (dest);
+}

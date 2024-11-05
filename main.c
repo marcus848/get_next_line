@@ -12,11 +12,23 @@
 
 #include "get_next_line.h"
 
-int	main(void)
+int main(void)
 {
-	int	fd;
-
-	fd = open("teste.txt", O_RDONLY);
-	printf("%s\n", get_next_line(fd));
-	// get_next_line(fd);
+    	int fd;
+    	char *line;
+	printf("Inicio:\n");
+    
+    	fd = open("teste.txt", O_RDONLY);
+    	if (fd == -1)
+    	{
+       		perror("Error opening file");
+        	return (1);
+    	}
+    	while ((line = get_next_line(fd)) != NULL)
+    	{
+        	printf("%s", line); // Removi o \n extra, pois o get_next_line já deve retornar a linha com o \n
+        	free(line);
+    	}
+    		close(fd);
+    		return (0);
 }
