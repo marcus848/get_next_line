@@ -14,21 +14,21 @@
 # define GET_NEXT_LINE_H
 
 # ifndef BUFFER_SIZE
-#  define BUFFER_SIZE 32
+#  define BUFFER_SIZE 42
 # endif
 # include <unistd.h>
 # include <stdlib.h>
 # include <stdio.h>
 # include <fcntl.h>
 
-char	*ft_make_join(char *s1, char *s2);
-void	ft_change_res(char **res, char *newline_pos);
-char	*ft_make_line(int fd, char **res, char *buf, char *line);
 char	*get_next_line(int fd);
-char	*ft_strdup(const char *s);
-char	*ft_strjoin(char const *s1, char const *s2);
+char	*find_next_line(char *line);
+char	*find_current_line(char *line);
+char	*get_full_line(int fd, char *line);
 char	*ft_strchr(const char *s, int c);
 int		ft_strlen(const char *s);
-void	*ft_memcpy(void *dest, const void *src, size_t n);
+char	*ft_strdup(const char *s);
+char	*ft_strjoin(char const *s1, char const *s2);
+void	*ft_memcpy(void *dst, const void *src, size_t n);
 
 #endif

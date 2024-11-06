@@ -12,116 +12,95 @@
 
 #include "get_next_line.h"
 
-char	*ft_make_join(char *s1, char *s2)
+char	*find_next_line(char *line)
 {
-	char	*str_join;
-	
-	if (!s1 || !s2)
-		return (NULL);
-	str_join = ft_strjoin(s1, s2)
-	if (!str_join)
-	{
-		free(s1);
-		return (NULL);
-	}
-	free(s1);
-	return (str_join);
+	char	*next_line;
+	int		i;
+	int		j;
+
+	i = 0;
+	while (line[i] && line[i] != '\n')
+		i++;
+	if (!line[i])
+		return (free(line), NULL);
+	next_line = (char *) malloc((ft_strlen(line) - i) + 1);
+	if (!next_line)
+		return (free(line), NULL);
+	i++;
+	j = 0;
+	while (line[i])
+		next_line[j++] = line[i++];
+	next_line[j] = '\0';
+	free(line);
+	return (next_line);
 }
 
-void	ft_change_res(char **res, char *newline_pos)
+char	*find_current_line(char *line)
 {
+	char	*current_line;
+	int		i;
+
+	i = 0;
+	if (!line[i])
+		return (NULL);
+	while (line[i] && line[i] != '\n')
+		i++;
+	if (line[i] == '\n')
+		i++;
+	current_line = (char *) malloc(i + 1);
+	if (!current_line)
+		return (NULL);
+	i = 0;
+	while (line[i] && line[i] != '\n')
+	{
+		current_line[i] = line[i];
+		i++;
+	}
+	if (line[i] == '\n')
+		current_line[i++] = '\n';
+	current_line[i] = '\0';
+	return (current_line);
+}
+
+char	*get_full_line(int fd, char *line)
+{
+	char	*buf;
 	char	*temp;
+	int		size_read;
 
-	if (newline_pos && *(newline_pos + 1) != '\0')
+	buf = (char *) malloc(BUFFER_SIZE + 1);
+	if (!buf)
+		return (free(line), line = NULL);
+	size_read = 1;
+	while (size_read > 0 && !ft_strchr(line, '\n'))
 	{
-		temp = ft_strdup(newline_pos + 1);
-		if (!temp)
-		{
-			free(*res);
-			*res = NULL;
-			return ;
-		}
-		free(*res);
-		*res = temp;
-	}
-	else
-	{
-		free(*res);
-		*res = NULL;
-	}
-}
-
-char	*ft_make_line(int fd, char **res, char *buf, char *line)
-{
-	int	size_read;
-	char	*newline_pos;
-	
-	if (*res)
-	{
-		line = ft_make_join(line, *res);
-		if (!line)
-			return (NULL);
-		ft_change_res(res, ft_strchr(*res, '\n'));
-		if (!*res)
-			return (NULL);
-	}
-	size_read = read(fd, buf, BUFFER_SIZE);
-	while (size_read > 0)
-	{
-		buf[size_read] = '\0';
-      		newline_pos = ft_strchr(buf, '\n');
-		if (newline_pos)
-		{
-			line = ft_make_join(line, buf);
-			if (!line)
-				return (NULL);
-			ft_change_res(res, newline_pos);
-			if (!res)
-				return (NULL);
-			free(buf);
-			return (line);
-		}
-		if (ft_strlen(line) == 0)
-		{
-			line = ft_strdup(buf);
-			if (!line)
-				return (NULL);
-		}
-		else
-		{
-			line = ft_make_join(line, buf);
-			if (!line)
-				return (NULL);
-		}
 		size_read = read(fd, buf, BUFFER_SIZE);
+		if (size_read < 0)
+			return (free(buf), free(line), line = NULL);
+		if (size_read == 0)
+			break ;
+		buf[size_read] = '\0';
+		temp = ft_strjoin(line, buf);
+		free(line);
+		line = temp;
 	}
 	free(buf);
-	if (size_read == 0 && line[0] == '\0')
-		return(NULL);
 	return (line);
 }
-
-
 
 char	*get_next_line(int fd)
 {
-	char		*buf;
-	static char	*res;
-	char		*line;
-	
+	static char	*line;
+	char		*current_line;
+
 	if (fd < 0 || BUFFER_SIZE <= 0)
 		return (NULL);
-	buf = (char *) malloc((BUFFER_SIZE + 1) * sizeof(char));
-	if (!buf)
-		return (NULL);
-	line = ft_strdup("");
 	if (!line)
-	{
-		free(buf);
-		return (NULL);
-	}
-	line = ft_make_line(fd, &res, buf, line);
+		line = ft_strdup("");
+	line = get_full_line(fd, line);
 	if (!line)
-		free(buf);
-	return (line);
+		return (NULL);
+	current_line = find_current_line(line);
+	line = find_next_line(line);
+	return (current_line);
 }
