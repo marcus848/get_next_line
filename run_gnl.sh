@@ -1,8 +1,12 @@
 #!/bin/bash
+name="gnl.out"
+objs="main.c get_next_line.c get_next_line_utils.c"
+cc="gcc"
+flags="-Wall -Wextra -Werror"
+buffer=42
 
-if [ -z "$1" ]; then
-  echo "Usage: ./run_gnl.sh <BUFFER_SIZE>"
-  exit 1
+if [ -n "$1" ]; then
+  buffer=$1
 fi
 
-gcc -Wall -Wextra -Werror -D BUFFER_SIZE="$1" main.c get_next_line.c get_next_line_utils.c -o gnl && ./gnl
+$cc $flags -g -D BUFFER_SIZE=$buffer $objs -o $name

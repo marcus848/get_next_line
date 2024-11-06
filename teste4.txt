@@ -1,0 +1,11 @@
+NAME = gnl.out
+OBJS = main.c get_next_line.c get_next_line_utils.c
+CC = gcc
+FLAGS = -Wall -Wextra -Werror
+BUFFER = 42
+
+make:
+	$(CC) $(FLAGS) -g -D BUFFER_SIZE="$(BUFFER)" $(OBJS) -o $(NAME) 
+
+clean: 
+	rm $(NAME)
