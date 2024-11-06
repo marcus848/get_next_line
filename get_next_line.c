@@ -15,37 +15,14 @@
 char	*ft_make_join(char *s1, char *s2)
 {
 	char	*str_join;
-	char	*temp;
-	int	i;
-
-	temp = NULL;
-	i = 0;
-	if (ft_strchr(s2, '\n'))
+	
+	if (!s1 || !s2)
+		return (NULL);
+	str_join = ft_strjoin(s1, s2)
+	if (!str_join)
 	{
-		i = ft_strchr(s2, '\n') - s2;
-		temp = ft_strdup(s2);
-		if (!temp)
-		{
-			free(s1);
-			return (NULL);
-		}
-		*(ft_strchr(temp, '\n') + 1) = '\0';
-		str_join = ft_strjoin(s1, temp);
-		free(temp);
-		if (!str_join)
-		{
-			free(s1);
-			return (NULL);
-		}
-	}
-	else
-	{
-		str_join = ft_strjoin(s1, s2);
-		if (!str_join)
-		{
-			free(s1);
-			return (NULL);
-		}
+		free(s1);
+		return (NULL);
 	}
 	free(s1);
 	return (str_join);
