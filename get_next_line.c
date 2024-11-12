@@ -12,95 +12,116 @@
 
 #include "get_next_line.h"
 
-char	*find_next_line(char *line)
-{
-	char	*next_line;
-	int		i;
-	int		j;
-
-	i = 0;
-	while (line[i] && line[i] != '\n')
-		i++;
-	if (!line[i])
-		return (free(line), NULL);
-	next_line = (char *) malloc((ft_strlen(line) - i) + 1);
-	if (!next_line)
-		return (free(line), NULL);
-	i++;
-	j = 0;
-	while (line[i])
-		next_line[j++] = line[i++];
-	next_line[j] = '\0';
-	free(line);
-	return (next_line);
-}
-
-char	*find_current_line(char *line)
-{
-	char	*current_line;
-	int		i;
-
-	i = 0;
-	if (!line[i])
-		return (NULL);
-	while (line[i] && line[i] != '\n')
-		i++;
-	if (line[i] == '\n')
-		i++;
-	current_line = (char *) malloc(i + 1);
-	if (!current_line)
-		return (NULL);
-	i = 0;
-	while (line[i] && line[i] != '\n')
-	{
-		current_line[i] = line[i];
-		i++;
-	}
-	if (line[i] == '\n')
-		current_line[i++] = '\n';
-	current_line[i] = '\0';
-	return (current_line);
-}
-
-char	*get_full_line(int fd, char *line)
-{
-	char	*buf;
-	char	*temp;
-	int		size_read;
-
-	buf = (char *) malloc(BUFFER_SIZE + 1);
-	if (!buf)
-		return (free(line), line = NULL);
-	size_read = 1;
-	while (size_read > 0 && !ft_strchr(line, '\n'))
-	{
-		size_read = read(fd, buf, BUFFER_SIZE);
-		if (size_read < 0)
-			return (free(buf), free(line), line = NULL);
-		if (size_read == 0)
-			break ;
-		buf[size_read] = '\0';
-		temp = ft_strjoin(line, buf);
-		free(line);
-		line = temp;
-	}
-	free(buf);
-	return (line);
-}
-
 char	*get_next_line(int fd)
 {
-	static char	*line;
+	static t_list	*list;
 	char		*current_line;
 
 	if (fd < 0 || BUFFER_SIZE <= 0)
 		return (NULL);
-	if (!line)
-		line = ft_strdup("");
-	line = get_full_line(fd, line);
-	if (!line)
+	create_list(&list, fd);
+	if (!list)
 		return (NULL);
-	current_line = find_current_line(line);
-	line = find_next_line(line);
+	current_line = construct_line(list);
+	if (!current_line)
+		return (free_nodes(&list), NULL);
+	free_nodes(&list);
+	if (*current_line == '\0')
+		return (free(current_line), NULL);
 	return (current_line);
+}
+
+int	calculate_line_len(t_list *list)
+{
+	int	len;
+	int	i;
+
+	if (!list)
+		return (0);
+	len = 0;
+	while (list)
+	{
+		i = 0;
+		while (list->content[i])
+		{
+			if (list->content[i] == '\n')
+			{
+				len++;
+				return (len);
+			}
+			i++;
+			len++;
+		}
+		list = list->next;
+	}
+	return (len);
+}
+
+void	create_list(t_list **list, int fd)
+{
+	char	*buf;
+	int		size_read;
+
+	while (!found_new_line(*list))
+	{
+		buf = malloc(BUFFER_SIZE + 1);
+		if (!buf)
+			return ;
+		size_read = read(fd, buf, BUFFER_SIZE);
+		if (size_read == -1)
+		{
+			free(buf);
+			free_nodes(list);
+			return ;
+		}
+		if (size_read == 0)
+		{
+			free(buf);
+			return ;
+		}
+		buf[size_read] = '\0';
+		append_node(list, buf);
+	}
+}
+
+char	*construct_line(t_list *list)
+{
+	char	*current_line;
+	int		line_len;
+	int		i;
+	int		j;
+
+	if (list == NULL)
+		 return (NULL);
+	line_len = calculate_line_len(list);
+	current_line = malloc(line_len + 1);
+	if (!current_line)
+		return (NULL);
+	copy_current_line(list, current_line);
+	return (current_line);
+}
+
+void	split_node_at_newline(t_list *list)
+{
+	char	*next_line;
+	int		len;
+	int		i_newline;
+
+	i_newline = calculate_line_len(list);
+	len = 0;
+	while (list->content[len])
+		len++;
+	if (len == i_newline)
+	{
+		free(list->content);
+		free(list);
+		return ;
+	}
+	next_line = malloc((len - i_newline) + 2);
+	if (!next_line)
+		return ;
+	len = 0;
+	while (list->content[i_newline])
+		next_line[len++] = list->content[i_newline++];
+	next_line[len] = '\0';
 }

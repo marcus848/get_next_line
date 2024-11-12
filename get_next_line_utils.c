@@ -12,79 +12,94 @@
 
 #include "get_next_line.h"
 
-char	*ft_strchr(const char *s, int c)
-{
-	char	*point;
-	int		i;
-
-	point = (char *)s;
-	i = 0;
-	while (point[i])
-	{
-		if (point[i] == (char) c)
-			return (&point[i]);
-		i++;
-	}
-	if ((char)c == '\0')
-		return (&point[i]);
-	return (NULL);
-}
-
-int	ft_strlen(const char *s)
+int	found_new_line(t_list *list)
 {
 	int	i;
 
-	i = 0;
-	while (*s++)
-		i++;
-	return (i);
-}
-
-char	*ft_strdup(const char *s)
-{
-	char	*dup;
-	int		s_len;
-
-	s_len = ft_strlen((char *) s);
-	dup = (char *) malloc(sizeof(char) * (s_len + 1));
-	if (!dup)
-		return (NULL);
-	if (!s)
-		return (NULL);
-	ft_memcpy(dup, s, s_len);
-	dup[s_len] = '\0';
-	return (dup);
-}
-
-char	*ft_strjoin(char const *s1, char const *s2)
-{
-	char	*str_join;
-	int		len_s1;
-	int		len_s2;
-
-	len_s1 = ft_strlen(s1);
-	len_s2 = ft_strlen(s2);
-	str_join = (char *) malloc((len_s1 + len_s2 + 1) * sizeof(char));
-	if (!str_join)
-		return (NULL);
-	ft_memcpy(str_join, s1, len_s1);
-	ft_memcpy(&str_join[len_s1], s2, len_s2);
-	str_join[len_s1 + len_s2] = '\0';
-	return (str_join);
-}
-
-void	*ft_memcpy(void *dest, const void *src, size_t n)
-{
-	const unsigned char	*s;
-	unsigned char		*d;
-
-	s = (unsigned char *)src;
-	d = (unsigned char *)dest;
-	if (!dest && !src)
-		return (dest);
-	while (n-- > 0)
+	if (list == NULL)
+		return (0);
+	while (list)
 	{
-		*d++ = *s++;
+		i = 0;
+		while (list->content[i] && i < BUFFER_SIZE)
+		{
+			if (list->content[i] == '\n')
+				return (1);
+			i++;
+		}
+		list = list->next;
 	}
-	return (dest);
+	return (0);
+}
+
+void	append_node(t_list **list, char *buf)
+{
+	t_list	*new_node;
+	t_list	*last_node;
+
+	last_node = find_last_node(*list);
+	new_node = malloc(sizeof(t_list));
+	if (!new_node)
+		return ;
+	if (!last_node)
+		*list = new_node;
+	else
+		last_node->next = new_node;
+	new_node->content = buf;
+	new_node->next = NULL;
+}
+
+t_list	*find_last_node(t_list *list)
+{
+	if (list == NULL)
+		return (NULL);
+	while (list->next)
+		list = list->next;
+	return (list);
+}
+
+void	copy_current_line(t_list *list, char *current_line)
+{
+	int	i;
+	int	j;
+
+	if (!list)
+		return ;
+	j = 0;
+	while (list)
+	{
+		i = 0;
+		while (list->content[i])
+		{
+			if (list->content[i] == '\n')
+			{
+				current_line[j++] = '\n';
+				current_line[j] = '\0';
+				return ;
+			}
+			current_line[j++] = list->content[i++];
+		}
+		list = list->next;
+	}
+	current_line[j] = '\0';
+}
+
+void	free_nodes(t_list **list)
+{
+	t_list	*temp;
+	
+	while ((*list)->next != NULL)
+	{
+		temp = (*list)->next;
+		free((*list)->content);
+		free(*list);
+		*list = temp;
+	}
+	if (!found_new_line(*list))
+	{
+		free((*list)->content);
+		free(*list);
+		*list = NULL;
+	}
+	split_node_at_newline(*list);
 }
