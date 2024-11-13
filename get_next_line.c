@@ -11,11 +11,12 @@
 /* ************************************************************************** */
 
 #include "get_next_line.h"
+#include <stdlib.h>
 
 char	*get_next_line(int fd)
 {
 	static t_list	*list;
-	char		*current_line;
+	char			*current_line;
 
 	if (fd < 0 || BUFFER_SIZE <= 0)
 		return (NULL);
@@ -23,11 +24,9 @@ char	*get_next_line(int fd)
 	if (!list)
 		return (NULL);
 	current_line = construct_line(list);
-	if (!current_line)
-		return (free_nodes(&list), NULL);
-	free_nodes(&list);
-	if (*current_line == '\0')
-		return (free(current_line), NULL);
+	if (!current_line || *current_line == '\0')
+		return (free(current_line), free_nodes(&list, NULL), NULL);
+	clean_list(&list);
 	return (current_line);
 }
 
@@ -71,7 +70,7 @@ void	create_list(t_list **list, int fd)
 		if (size_read == -1)
 		{
 			free(buf);
-			free_nodes(list);
+			free_nodes(list, NULL);
 			return ;
 		}
 		if (size_read == 0)
@@ -90,7 +89,7 @@ char	*construct_line(t_list *list)
 	int		line_len;
 
 	if (list == NULL)
-		 return (NULL);
+		return (NULL);
 	line_len = calculate_line_len(list);
 	current_line = malloc(line_len + 1);
 	if (!current_line)
@@ -99,29 +98,34 @@ char	*construct_line(t_list *list)
 	return (current_line);
 }
 
-void	split_node_at_newline(t_list *list)
+void	clean_list(t_list **list)
 {
+	t_list	*last_node;
+	t_list	*next_node;
 	char	*next_line;
-	int		len;
-	int		i_newline;
+	int		i;
+	int		k;
 
-	i_newline = calculate_line_len(list);
-	len = 0;
-	while (list->content[len])
-		len++;
-	if (len == i_newline)
+	if (!list || !*list)
+		return ;
+	last_node = find_last_node(*list);
+	i = 0;
+	while (last_node->content[i] && last_node->content[i] != '\n')
+		i++;
+	if (last_node->content[i] == '\n')
+		i++;
+	k = 0;
+	next_line = malloc(BUFFER_SIZE + 1);
+	next_node = malloc(sizeof(t_list));
+	if (!next_node || !next_line)
 	{
-		free(list->content);
-		free(list);
+		free (next_line);
 		return ;
 	}
-	next_line = malloc((len - i_newline) + 1);
-	if (!next_line)
-		return ;
-	len = 0;
-	while (list->content[i_newline])
-		next_line[len++] = list->content[i_newline++];
-	next_line[len] = '\0';
-	free(list->content);
-	list->content = next_line;
+	while (last_node->content[i])
+		next_line[k++] = last_node->content[i++];
+	next_line[k] = '\0';
+	next_node->content = next_line;
+	next_node->next = NULL;
+	free_nodes(list, next_node);
 }

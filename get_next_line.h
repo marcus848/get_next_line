@@ -27,16 +27,16 @@ typedef struct s_list
 	struct s_list	*next;
 }	t_list;
 // get_next_line
-char	*get_next_line(int fd);
 void	create_list(t_list **list, int fd);
-int	calculate_line_len(t_list *list);
+void	clean_list(t_list **list);
+char	*get_next_line(int fd);
 char	*construct_line(t_list *list);
-void	split_node_at_newline(t_list *list);
+int		calculate_line_len(t_list *list);
 // get_next_line_utils
-int	found_new_line(t_list *list);
 void	append_node(t_list **list, char *buf);
-t_list	*find_last_node(t_list	*list);
-void	free_nodes(t_list **list);
+void	free_nodes(t_list **list, t_list *next_node);
 void	copy_current_line(t_list *list, char *current_line);
+t_list	*find_last_node(t_list	*list);
+int		found_new_line(t_list *list);
 
 #endif

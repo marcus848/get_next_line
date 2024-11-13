@@ -84,22 +84,25 @@ void	copy_current_line(t_list *list, char *current_line)
 	current_line[j] = '\0';
 }
 
-void	free_nodes(t_list **list)
+void	free_nodes(t_list **list, t_list *next_node)
 {
 	t_list	*temp;
-	
-	while ((*list)->next != NULL)
+
+	while (*list)
 	{
 		temp = (*list)->next;
 		free((*list)->content);
 		free(*list);
 		*list = temp;
 	}
-	if (!found_new_line(*list))
+	if (next_node)
+		*list = next_node;
+	else
+		*list = NULL;
+	if (next_node && !next_node->content[0])
 	{
-		free((*list)->content);
-		free(*list);
+		free(next_node->content);
+		free(next_node);
 		*list = NULL;
 	}
-	split_node_at_newline(*list);
 }
