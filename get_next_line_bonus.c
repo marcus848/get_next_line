@@ -10,26 +10,29 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "get_next_line.h"
+#include "get_next_line_bonus.h"
 #include <stdlib.h>
 
 char	*get_next_line(int fd)
 {
-	static t_list	*list;
+	static t_list	*list[1024];
 	char			*current_line;
 
-	if (fd < 0 || BUFFER_SIZE <= 0)
+	if (fd < 0 || fd > 1024 || BUFFER_SIZE <= 0)
 		return (NULL);
-	create_list(&list, fd);
-	if (!list)
-		return (NULL);
-	current_line = construct_line(list);
-	if (!current_line)
+	create_list(list, fd);
+	if (!list[fd])
 	{
-		free_nodes(&list, NULL, NULL);
+		free_nodes(&list[fd], NULL, NULL);
 		return (NULL);
 	}
-	clean_list(&list);
+	current_line = construct_line(list[fd]);
+	if (!current_line)
+	{
+		free_nodes(&list[fd], NULL, NULL);
+		return (NULL);
+	}
+	clean_list(&list[fd]);
 	if (*current_line == '\0')
 		return (free(current_line), NULL);
 	return (current_line);
@@ -66,7 +69,7 @@ void	create_list(t_list **list, int fd)
 	char	*buf;
 	int		size_read;
 
-	while (!found_new_line(*list))
+	while (!found_new_line(list[fd]))
 	{
 		buf = malloc(BUFFER_SIZE + 1);
 		if (!buf)
@@ -75,7 +78,7 @@ void	create_list(t_list **list, int fd)
 		if (size_read == -1)
 		{
 			free(buf);
-			free_nodes(list, NULL, NULL);
+			free_nodes(&list[fd], NULL, NULL);
 			return ;
 		}
 		if (size_read == 0)
@@ -84,7 +87,7 @@ void	create_list(t_list **list, int fd)
 			return ;
 		}
 		buf[size_read] = '\0';
-		append_node(list, buf);
+		append_node(list, buf, fd);
 	}
 }
 

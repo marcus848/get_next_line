@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "get_next_line.h"
+#include "get_next_line_bonus.h"
 
 int	found_new_line(t_list *list)
 {
@@ -32,17 +32,17 @@ int	found_new_line(t_list *list)
 	return (0);
 }
 
-void	append_node(t_list **list, char *buf)
+void	append_node(t_list **list, char *buf, int fd)
 {
 	t_list	*new_node;
 	t_list	*last_node;
 
-	last_node = find_last_node(*list);
+	last_node = find_last_node(list[fd]);
 	new_node = malloc(sizeof(t_list));
 	if (!new_node)
 		return ;
 	if (!last_node)
-		*list = new_node;
+		list[fd] = new_node;
 	else
 		last_node->next = new_node;
 	new_node->content = buf;
