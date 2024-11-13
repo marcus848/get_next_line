@@ -88,8 +88,6 @@ char	*construct_line(t_list *list)
 {
 	char	*current_line;
 	int		line_len;
-	int		i;
-	int		j;
 
 	if (list == NULL)
 		 return (NULL);
@@ -117,11 +115,13 @@ void	split_node_at_newline(t_list *list)
 		free(list);
 		return ;
 	}
-	next_line = malloc((len - i_newline) + 2);
+	next_line = malloc((len - i_newline) + 1);
 	if (!next_line)
 		return ;
 	len = 0;
 	while (list->content[i_newline])
 		next_line[len++] = list->content[i_newline++];
 	next_line[len] = '\0';
+	free(list->content);
+	list->content = next_line;
 }
