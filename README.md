@@ -59,6 +59,9 @@ a função **get_next_line** foi projetada para ler de um determinado file descr
 	    return (current_line);
     }
     ```
+### 📋 Linked list 
+Também existe uma versão alternativa do get_next_line que utiliza listas encadeadas (linked lists) para gerenciar a leitura dos dados. Para mais detalhes, você pode acessar o README específico nesta branch.
+
 ## ⚙️ instalação
 para usar o **get_next_line**, clone o repositório e certifique-se de que você tem as seguintes dependências instaladas:
 
@@ -68,7 +71,7 @@ para usar o **get_next_line**, clone o repositório e certifique-se de que você
 clone o repositório com:
 
 ```bash
-git clone https://github.com/seu-usuario/get_next_line.git gnl
+git clone https://github.com/marcus848/get_next_line.git gnl
 ```
 
 ## 🧪  uso
