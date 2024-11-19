@@ -11,48 +11,106 @@
 /* ************************************************************************** */
 
 #include "get_next_line.h"
+#include <stdio.h>
+#include <string.h>
 
-int main(void)
+int main(int argc, char **argv)
 {
-    	int fd;
-	int fd2;
-	int fd3;
-	int i;
-	char *line;
-	printf("Inicio:\n");
-    	printf("Teste 1:\n");
-    	fd = open("teste.txt", O_RDONLY);
-	fd2 = open("teste2.txt", O_RDONLY);
-	fd3 = open("teste3.txt", O_RDONLY);
-    	if (fd == -1 || fd2 == -1 || fd3 == -1)
-    	{
-		perror("Error opening file");
-		return (1);
-    	}
-	i = 1;
-    	while ((line = get_next_line(fd)) != NULL)
-    	{
-        	printf("teste1 >>> line %d: %s\n", i, line); // Removi o \n extra, pois o get_next_line já deve retornar a linha com o \n
-        	free(line);
-		i++;
-    	}
-	i = 1;
-    	while ((line = get_next_line(fd2)) != NULL)
-    	{
-        	printf("teste2 >>> line %d: %s\n", i, line); // Removi o \n extra, pois o get_next_line já deve retornar a linha com o \n
-        	free(line);
-		i++;
-	}
-    	i = 1;
-    	while ((line = get_next_line(fd3)) != NULL)
-    	{
-        	printf("teste3 >>> line %d: %s\n", i, line); // Removi o \n extra, pois o get_next_line já deve retornar a linha com o \n
-        	free(line);
-		i++;
-    	}
+    int     fd1, fd2, fd3;
+    char    *line;
+    int     line_num;
 
-    	close(fd);
-	close(fd2);
-	close(fd3);
-    	return (0);
+    printf(">>>>> Iniciando o tester <<<<<\n");
+    printf(">>> BUFFER_SIZE = %d\n", BUFFER_SIZE);
+    if (argc > 1 && strcmp(argv[1], "-bonus") == 0)
+    {
+        // Abrir os arquivos
+        fd1 = open("test1.txt", O_RDONLY);
+        fd2 = open("test2.txt", O_RDONLY);
+        fd3 = open("test3.txt", O_RDONLY);
+
+        if (fd1 < 0 || fd2 < 0 || fd3 < 0)
+        {
+            perror("Erro ao abrir arquivos");
+            return (1);
+        }
+
+        // Ler e imprimir as linhas intercaladas dos arquivos test1.txt, test2.txt e test3.txt
+        printf("\n--- Testando múltiplos FDs ---\n");
+        int finished = 0;
+        line_num = 1;
+        while (!finished)
+        {
+            finished = 1;
+            printf("\n--- Conteudo linha %d ---\n", line_num);
+            if ((line = get_next_line(fd1)) != NULL)
+            {
+                printf("test1 >>> %s", line);
+                free(line);
+                finished = 0;
+            }
+            if ((line = get_next_line(fd2)) != NULL)
+            {
+                printf("test2 >>> %s", line);
+                free(line);
+                finished = 0;
+            }
+            if ((line = get_next_line(fd3)) != NULL)
+            {
+                printf("test3 >>> %s", line);
+                free(line);
+                finished = 0;
+            }
+            line_num++;
+        }
+        close(fd1);
+        close(fd2);
+        close(fd3);
+    }
+    else
+    {
+        // Abrir os arquivos
+        fd1 = open("test1.txt", O_RDONLY);
+        fd2 = open("test2.txt", O_RDONLY);
+        fd3 = open("test3.txt", O_RDONLY);
+
+        if (fd1 < 0 || fd2 < 0 || fd3 < 0)
+        {
+            perror("Erro ao abrir arquivos");
+            return (1);
+        }
+
+        // Ler e imprimir as linhas do arquivo test1.txt
+        printf("\n--- Conteudo de test1.txt ---\n");
+        line_num = 1;
+        while ((line = get_next_line(fd1)) != NULL)
+        {
+            printf("test1 >>>>> line %d: %s", line_num++, line);
+            free(line);
+        }
+        close(fd1);
+
+        // Ler e imprimir as linhas do arquivo test2.txt
+        printf("\n--- Conteudo de test2.txt ---\n");
+        line_num = 1;
+        while ((line = get_next_line(fd2)) != NULL)
+        {
+            printf("test2 >>>>> line %d: %s", line_num++, line);
+            free(line);
+        }
+        close(fd2);
+
+        // Ler e imprimir as linhas do arquivo test3.txt
+        printf("\n--- Conteudo de test3.txt ---\n");
+        line_num = 1;
+        while ((line = get_next_line(fd3)) != NULL)
+        {
+            printf("test3 >>>>> line %d: %s", line_num++, line);
+            free(line);
+        }
+        close(fd3);
+    }
+
+    return (0);
 }
+
