@@ -7,7 +7,7 @@ o projeto **get_next_line** da 42 é um exercício de leitura de um file descrip
 - [instalação](#%EF%B8%8F-instalação)
 - [uso](#--uso)
 - [bônus](#-bônus)
-- [Funções do gnl](#EF%B8%8F-funções-do-get_next_linec)
+- [Funções do gnl](#%EF%B8%8F-funções-do-get_next_linec)
 - [notas](#-notas)
 - [conclusão](#-conclusão)
 
