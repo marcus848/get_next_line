@@ -2,13 +2,13 @@
 o projeto **get_next_line** da 42 é um exercício de leitura de um file descriptor(fd) linha por linha, fornecendo uma função `char *get_next_line(int fd)` que retornará a próxima linha a cada vez que for chamada. este readme tem como objetivo fornecer uma compreensão clara da implementação, da metodologia de teste e de como você pode executar o código fornecido em seu sistema.
 
 ## 📋 índice
-- [antes de começar](#Antes-de-Começar)
-- [sobre](#sobre)
-- [instalação](#instalação)
-- [uso](#uso)
-- [bônus](#bônus)
-- [notas](#notas)
-- [conclusão](#notas)
+- [antes de começar](#-antes-de-começar)
+- [sobre](#-sobre)
+- [instalação](#-instalação)
+- [uso](#-uso)
+- [bônus](#-bônus)
+- [notas](#-notas)
+- [conclusão](#-conclusão)
 
 ## 🚀 Antes de Começar
 
@@ -60,7 +60,7 @@ a função **get_next_line** foi projetada para ler de um determinado file descr
     }
     ```
 ### 📋 Linked list 
-Também existe uma versão alternativa do get_next_line que utiliza listas encadeadas (linked lists) para gerenciar a leitura dos dados. Para mais detalhes, você pode acessar o README específico nesta branch.
+Também existe uma versão alternativa do get_next_line que utiliza listas encadeadas (linked lists) para gerenciar a leitura dos dados. Para mais detalhes, você pode acessar o README específico [nesta branch](https://github.com/marcus848/get_next_line/tree/linked_list).
 
 ## ⚙️ instalação
 para usar o **get_next_line**, clone o repositório e certifique-se de que você tem as seguintes dependências instaladas:
