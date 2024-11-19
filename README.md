@@ -7,7 +7,7 @@ Este README tem como objetivo fornecer uma compreensão detalhada do funcionamen
   - [get_next_line](#-get_next_lineint-fd)
   - [construct_line](#-construct_linet_list-list)
   - [create_list](#-create_listt_list-list-int-fd)
-  - [clean_list](#clean_list)
+  - [clean_list](#-clean_listt_list-list)
   - [found_new_line](#-found_new_linet_list-list)
   - [append_node](#-append_nodet_list-list-char-buf)
   - [find_last_node](#-find_last_nodet_list-list)
