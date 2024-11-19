@@ -2,7 +2,7 @@
 Este README tem como objetivo fornecer uma compreensão detalhada do funcionamento e do código da versão **Linked List** do **get_next_line**. As explicações gerais sobre o desafio e a metodologia de teste estão disponíveis na branch `main`. Aqui, focaremos exclusivamente na implementação e no funcionamento do código.
 
 ## 📋 Índice
-- [Antes](#antes-de-comecar)
+- [Antes](#-antes-de-comecar)
 - [Explicação do Código](#explicação-do-código)
   - [get_next_line](#get_next_line)
   - [construct_line](#construct_line)
