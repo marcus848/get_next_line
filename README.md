@@ -18,7 +18,7 @@ Este README tem como objetivo fornecer uma compreensão detalhada do funcionamen
 
 ## 🚀 Antes de Começar
 ### O que é Linked List?
-Uma linked list (ou lista encadeada) é uma estrutura de dados composta por uma sequência de nós, onde cada nó contém um valor e um ponteiro para o próximo nó. Essa estrutura permite alocações dinâmicas e não exige um tamanho pré-definido, ao contrário dos arrays. Para mais informações sobre linked lists, confira [este artigo](https://www.simplilearn.com/tutorials/c-tutorial/singly-linked-list-in-c).
+Uma linked list (ou lista encadeada) é uma estrutura de dados composta por uma sequência de nós, onde cada nó contém um valor e um ponteiro para o próximo nó. Essa estrutura permite alocações dinâmicas e não exige um tamanho pré-definido, ao contrário dos arrays. Para mais informações sobre linked lists, confira <a href="https://www.simplilearn.com/tutorials/c-tutorial/singly-linked-list-in-c" target="_blank">este artigo</a> [este artigo](https://www.simplilearn.com/tutorials/c-tutorial/singly-linked-list-in-c).
 
 Na nossa implementação do **get_next_line**, utilizamos a seguinte estrutura de linked list:
 
