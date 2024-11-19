@@ -1,5 +1,5 @@
 # get_next_line (Versão Linked List)
-Este README tem como objetivo fornecer uma compreensão detalhada do funcionamento e do código da versão **Linked List** do **get_next_line**. As explicações gerais sobre o desafio e a metodologia de teste estão disponíveis na branch `main`. Aqui, focaremos exclusivamente na implementação e no funcionamento do código.
+Este README tem como objetivo fornecer uma compreensão detalhada do funcionamento e do código da versão **Linked List** do **get_next_line**. As explicações gerais sobre o desafio e a metodologia de teste estão disponíveis na branch [main](https://github.com/marcus848/get_next_line/). Aqui, focaremos exclusivamente na implementação e no funcionamento do código.
 
 ## 📋 Índice
 - [Antes](#-antes-de-começar)
