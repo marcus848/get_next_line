@@ -67,60 +67,6 @@ Esta função copia o conteúdo dos nós da lista encadeada para a linha que ser
 Libera todos os nós da lista que foram processados. Também pode receber um novo nó (`next_node`) e conteúdo (`next_line`) para serem adicionados após a liberação dos nós anteriores, garantindo que apenas os dados necessários permaneçam. Isso evita vazamentos de memória e mantém a estrutura da lista pronta para novas leituras.
 
 ## 📊 Fluxograma do Funcionamento
-Abaixo está um fluxograma que ilustra como o sistema **get_next_line** funciona, desde a chamada da função até a construção e retorno da linha lida:
-
-1. **Chamada da Função `get_next_line(fd)`**
-   - Início do processo de leitura.
-2. **Verificação do FD e Inicialização da Lista**
-   - Se o descritor de arquivo (`fd`) for inválido, retorna `NULL`.
-   - Se o descritor for válido, a função `create_list` é chamada.
-3. **Leitura dos Dados e Criação da Lista**
-   - A função `create_list` lê dados do arquivo em blocos de tamanho `BUFFER_SIZE` e adiciona nós na lista encadeada.
-   - Continua lendo até encontrar um caractere de nova linha (`
-`) ou atingir o final do arquivo.
-4. **Construção da Linha (`construct_line`)**
-   - A função `construct_line` cria a linha a partir dos nós da lista, copiando os dados até o `
-` ou final do arquivo.
-5. **Limpeza da Lista (`clean_list`)**
-   - Após a linha ser construída, a função `clean_list` remove os nós que já foram processados.
-6. **Retorno da Linha**
-   - A linha é retornada ao chamador, e a lista permanece com os dados não processados para futuras chamadas da função.
-
-
-
-## 🧪 Testes
-Para facilitar os testes da função **get_next_line**, recomendamos o uso do script **tester_gnl.sh** fornecido, que permite testar a implementação de forma prática e automatizada. É importante saber que existem dois tipos de testes: simples e intercalado (múltiplos FDs - Bônus).
-
-### 🚩 Explicação das Flags do `tester_gnl.sh`
-O script **tester_gnl.sh** suporta as seguintes flags:
-
-- `-bonus`: Executa o teste intercalado com múltiplos file descriptors (FDs).
-- `-compile_bonus`: Compila apenas a versão bônus e a executa, útil para testar funcionalidades específicas da versão bônus.
-- `-compare`: Compara a execução entre a versão regular e a bônus, mostrando as diferenças no comportamento com múltiplos FDs.
-
-### 📋 Exemplos de Uso do `tester_gnl.sh`
-- **SINTAXE:**
-  ```bash
-  ./tester_gnl.sh {BUFFER_SIZE} {-bonus} {-compile_bonus} {-compare}
-  ```
-- Para compilar a versão normal e executar o teste com múltiplos FDs intercalados:
-  ```bash
-  ./tester_gnl.sh -bonus
-  ```
-- Para compilar a versão bônus e executar o teste simples, definindo o BUFFER_SIZE igual a 10:
-  ```bash
-  ./tester_gnl.sh 10 -compile_bonus
-  ```
-- Para compilar a versão bônus e executar o teste com múltiplos FDs intercalados:
-  ```bash
-  ./tester_gnl.sh -compile_bonus -bonus
-  ```
-- Para comparar as versões regular e bônus:
-  ```bash
-  ./tester_gnl.sh -compare
-  ```
-  Isso permitirá ver a diferença no comportamento entre as duas versões, especialmente no que diz respeito ao suporte para múltiplos FDs.
-
 ```mermaid
 stateDiagram-v2
     get_next_line
@@ -162,3 +108,37 @@ stateDiagram-v2
     }
 
 ```
+
+## 🧪 Testes
+Para facilitar os testes da função **get_next_line**, recomendamos o uso do script **tester_gnl.sh** fornecido, que permite testar a implementação de forma prática e automatizada. É importante saber que existem dois tipos de testes: simples e intercalado (múltiplos FDs - Bônus).
+
+### 🚩 Explicação das Flags do `tester_gnl.sh`
+O script **tester_gnl.sh** suporta as seguintes flags:
+
+- `-bonus`: Executa o teste intercalado com múltiplos file descriptors (FDs).
+- `-compile_bonus`: Compila apenas a versão bônus e a executa, útil para testar funcionalidades específicas da versão bônus.
+- `-compare`: Compara a execução entre a versão regular e a bônus, mostrando as diferenças no comportamento com múltiplos FDs.
+
+### 📋 Exemplos de Uso do `tester_gnl.sh`
+- **SINTAXE:**
+  ```bash
+  ./tester_gnl.sh {BUFFER_SIZE} {-bonus} {-compile_bonus} {-compare}
+  ```
+- Para compilar a versão normal e executar o teste com múltiplos FDs intercalados:
+  ```bash
+  ./tester_gnl.sh -bonus
+  ```
+- Para compilar a versão bônus e executar o teste simples, definindo o BUFFER_SIZE igual a 10:
+  ```bash
+  ./tester_gnl.sh 10 -compile_bonus
+  ```
+- Para compilar a versão bônus e executar o teste com múltiplos FDs intercalados:
+  ```bash
+  ./tester_gnl.sh -compile_bonus -bonus
+  ```
+- Para comparar as versões regular e bônus:
+  ```bash
+  ./tester_gnl.sh -compare
+  ```
+  Isso permitirá ver a diferença no comportamento entre as duas versões, especialmente no que diz respeito ao suporte para múltiplos FDs.
+
