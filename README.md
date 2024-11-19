@@ -3,8 +3,8 @@ Este README tem como objetivo fornecer uma compreensão detalhada do funcionamen
 
 ## 📋 Índice
 - [Antes](#-antes-de-começar)
-- [Explicação do Código](#explicação-do-código)
-  - [get_next_line](#get_next_line)
+- [Explicação do Código](#-explicação-do-código)
+  - [get_next_line](#-get_next_lineint-fd)
   - [construct_line](#construct_line)
   - [create_list](#create_list)
   - [clean_list](#clean_list)
