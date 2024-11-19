@@ -105,11 +105,16 @@ o script **tester_gnl.sh** suporta as seguintes flags:
   isso permitirá ver a diferença no comportamento entre as duas versões, especialmente no que diz respeito ao suporte para múltiplos FDs.
 
 ### 🔨 usando o script `compile.sh` manualmente
-caso deseje testar manualmente, você pode utilizar o script **compile.sh** para compilar os arquivos do projeto:
+caso deseje testar manualmente, você pode utilizar o script **compile.sh** para compilar os arquivos do projeto.
+A flag `-compile_bonus` também pode ser usada para compilar a versão que suporta múltiplos FDs:
 
 1. compile com o **compile.sh**:
    ```bash
    ./compile.sh 42
+   ```
+   ou para compilar a versão bônus:
+   ```bash
+   ./compile.sh 10 -compile_bonus
    ```
 
 2. execute o arquivo gerado (`gnl.out`) para ler as linhas dos arquivos de teste:
@@ -128,7 +133,7 @@ para testar a funcionalidade bônus, passe a flag `-bonus` durante a compilaçã
 
 exemplo:
 ```bash
-./compile.sh -bonus
+./compile.sh -compile_bonus
 ./gnl.out -bonus
 ```
 
